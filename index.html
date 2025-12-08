@@ -42,6 +42,7 @@
                 </video>
                 <div class="hero-overlay"></div>
             </div>
+            <div class="floating-fruits" id="floating-fruits"></div>
             <div class="hero-content">
                 <div class="hero-text">
                     <h1 class="animate-text">Fresh Natural Juices</h1>
@@ -80,8 +81,8 @@
                         <video controls poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Crect fill='%237cb342' width='400' height='300'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='white' font-size='24'%3E🌱 Organic Farm%3C/text%3E%3C/svg%3E">
                             <source src="https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_2mb.mp4" type="video/mp4">
                         </video>
-                        <h3>Our Organic Farm</h3>
-                        <p>See where our organic fruits are grown</p>
+                        <h3>Customer's Review</h3>
+                        <p>Watch Our Customer's FeedBack</p>
                     </div>
                 </div>
             </div>
@@ -152,5 +153,33 @@
     </footer>
 
     <script src="script.js"></script>
+    <script>
+        // Fruit animation - runs immediately
+        (function() {
+            const container = document.getElementById('floating-fruits');
+            if (!container) return;
+            
+            const fruits = ['🍊', '🍎', '🥕', '🍍', '🍉', '🥬', '🍋', '🍒', '🍇', '🥝'];
+            
+            function addFruit() {
+                const fruit = document.createElement('div');
+                fruit.className = 'fruit-emoji';
+                fruit.textContent = fruits[Math.floor(Math.random() * fruits.length)];
+                fruit.style.left = (Math.random() * 90 + 5) + '%';
+                fruit.style.animationDuration = (Math.random() * 4 + 6) + 's';
+                const isMobile = window.innerWidth <= 768;
+                fruit.style.fontSize = isMobile ? (Math.random() * 0.5 + 1.5) + 'rem' : (Math.random() * 1 + 2) + 'rem';
+                container.appendChild(fruit);
+                setTimeout(() => fruit.remove(), 10000);
+            }
+            
+            const isMobile = window.innerWidth <= 768;
+            const fruitCount = isMobile ? 5 : 10;
+            const interval = isMobile ? 800 : 500;
+            
+            for (let i = 0; i < fruitCount; i++) setTimeout(addFruit, i * 300);
+            setInterval(addFruit, interval);
+        })();
+    </script>
 </body>
 </html>

@@ -59,12 +59,41 @@ const products = [
 // Cart functionality
 let cart = [];
 
+// Floating fruits animation
+function initFloatingFruits() {
+    const fruitsContainer = document.getElementById('floating-fruits');
+    if (!fruitsContainer) return;
+    
+    const fruits = ['🍊', '🍎', '🥕', '🍍', '🍉', '🥬', '🍋', '🍒', '🍇', '🥝'];
+    
+    function createFruit() {
+        const fruit = document.createElement('div');
+        fruit.className = 'fruit-emoji';
+        fruit.textContent = fruits[Math.floor(Math.random() * fruits.length)];
+        fruit.style.left = (Math.random() * 90 + 5) + '%';
+        const duration = Math.random() * 4 + 6;
+        fruit.style.animationDuration = duration + 's';
+        fruit.style.fontSize = (Math.random() * 1 + 2) + 'rem';
+        
+        fruitsContainer.appendChild(fruit);
+        
+        setTimeout(() => fruit.remove(), duration * 1000);
+    }
+    
+    for (let i = 0; i < 8; i++) {
+        setTimeout(createFruit, i * 400);
+    }
+    
+    setInterval(createFruit, 600);
+}
+
 // Load products on page load
 document.addEventListener('DOMContentLoaded', function() {
     loadProducts();
     updateCartDisplay();
     initScrollAnimations();
     initSmoothScrolling();
+    initFloatingFruits();
 });
 
 // Smooth scrolling function
@@ -434,34 +463,29 @@ function toggleMobileMenu() {
     mobileToggle.classList.toggle('active');
 }
 
-// Close mobile menu when clicking on links
-document.addEventListener('DOMContentLoaded', function() {
+// Initialize on load
+window.addEventListener('load', function() {
     const navLinks = document.querySelectorAll('.nav-menu a');
     navLinks.forEach(link => {
         link.addEventListener('click', function() {
             const navMenu = document.getElementById('nav-menu');
             const mobileToggle = document.querySelector('.mobile-menu-toggle');
-            navMenu.classList.remove('active');
-            mobileToggle.classList.remove('active');
+            if (navMenu) navMenu.classList.remove('active');
+            if (mobileToggle) mobileToggle.classList.remove('active');
         });
     });
     
-    // Contact form handler
     const contactForm = document.getElementById('contact-form');
     if (contactForm) {
         contactForm.addEventListener('submit', function(e) {
             e.preventDefault();
-            
             const name = document.getElementById('name').value;
             const email = document.getElementById('email').value;
             const phone = document.getElementById('phone').value;
             const message = document.getElementById('message').value;
-            
             const whatsappMessage = `Hello! I'm ${name}\n\nEmail: ${email}\nPhone: ${phone}\n\nMessage: ${message}`;
             const encodedMessage = encodeURIComponent(whatsappMessage);
-            const whatsappUrl = `https://wa.me/2347036496552?text=${encodedMessage}`;
-            
-            window.open(whatsappUrl, '_blank');
+            window.open(`https://wa.me/2347036496552?text=${encodedMessage}`, '_blank');
         });
     }
 });
